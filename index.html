@@ -16,23 +16,16 @@
       margin-bottom: 30px;
       color: #00d4ff;
     }
-    input {
+    input, button {
       padding: 10px;
       margin: 5px;
       font-size: 16px;
       border-radius: 5px;
       border: none;
-      width: 100px;
-      text-align: center;
     }
     button {
-      padding: 10px 20px;
-      margin: 10px;
-      font-size: 16px;
       background-color: #00d4ff;
       color: #000;
-      border: none;
-      border-radius: 5px;
       cursor: pointer;
     }
     .result {
@@ -48,24 +41,53 @@
       max-height: 200px;
       overflow-y: auto;
     }
+    #sorteador {
+      display: none;
+    }
   </style>
 </head>
 <body>
   <h1>André Sorteios 102</h1>
-  <div>
-    <input type="number" id="min" placeholder="Mínimo" />
-    <input type="number" id="max" placeholder="Máximo" />
-    <input type="number" id="qtd" placeholder="Qtd" />
+
+  <!-- Tela de senha -->
+  <div id="login">
+    <input type="password" id="senha" placeholder="Digite a senha" />
+    <button onclick="verificarSenha()">Entrar</button>
+    <p id="mensagem"></p>
   </div>
-  <button onclick="sortear()">Sortear</button>
-  <button onclick="limpar()">Limpar Histórico</button>
-  <div class="result" id="resultado">Pronto para sortear</div>
-  <div class="history" id="historico"></div>
+
+  <!-- Sorteador -->
+  <div id="sorteador">
+    <div>
+      <input type="number" id="min" placeholder="Mínimo" />
+      <input type="number" id="max" placeholder="Máximo" />
+      <input type="number" id="qtd" placeholder="Qtd" />
+    </div>
+    <button onclick="sortear()">Sortear</button>
+    <button onclick="limpar()">Limpar Histórico</button>
+    <div class="result" id="resultado">Pronto para sortear</div>
+    <div class="history" id="historico"></div>
+  </div>
+
   <audio id="som">
     <source src="https://www.soundjay.com/button/sounds/button-29.mp3" type="audio/mpeg">
   </audio>
+
   <script>
     let historico = [];
+
+    function verificarSenha() {
+      const senha = document.getElementById("senha").value.trim().toLowerCase();
+      const msg = document.getElementById("mensagem");
+
+      if (senha === "vai procurar orar") {
+        msg.textContent = "Você é benção";
+        document.getElementById("login").style.display = "none";
+        document.getElementById("sorteador").style.display = "block";
+      } else {
+        msg.textContent = "Você errou a senha filho";
+      }
+    }
 
     function sortear() {
       const min = parseInt(document.getElementById("min").value);
