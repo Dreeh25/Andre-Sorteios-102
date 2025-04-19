@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="pt-br">
+<!DOCTYPE html>
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -64,49 +65,64 @@
     <source src="https://www.soundjay.com/button/sounds/button-29.mp3" type="audio/mpeg">
   </audio>
   <script>
-    let historico = [];function sortear() {
-  const min = parseInt(document.getElementById("min").value);
-  const max = parseInt(document.getElementById("max").value);
-  const qtd = parseInt(document.getElementById("qtd").value);
-  const som = document.getElementById("som");
+    let historico = [];
 
-  if (isNaN(min) || isNaN(max) || isNaN(qtd) || min >= max || qtd <= 0 || qtd > (max - min + 1)) {
-    alert("Valores inválidos");
-    return;
-  }
+    function sortear() {
+      const min = parseInt(document.getElementById("min").value);
+      const max = parseInt(document.getElementById("max").value);
+      const qtd = parseInt(document.getElementById("qtd").value);
+      const som = document.getElementById("som");
 
-  const pool = [];
-  for (let i = min; i <= max; i++) pool.push(i);
+      if (isNaN(min) || isNaN(max) || isNaN(qtd) || min >= max || qtd <= 0 || qtd > (max - min + 1)) {
+        alert("Valores inválidos");
+        return;
+      }
 
-  const sorteados = [];
-  while (sorteados.length < qtd) {
-    const i = Math.floor(Math.random() * pool.length);
-    sorteados.push(pool.splice(i, 1)[0]);
-  }
+      const pool = [];
+      for (let i = min; i <= max; i++) pool.push(i);
 
-  let i = 0;
-  const animar = setInterval(() => {
-    const sorteado = sorteados[i];
-    document.getElementById("resultado").textContent = sorteado;
-    som.play();
-    historico.push(sorteado);
-    atualizarHistorico();
-    i++;
-    if (i >= sorteados.length) clearInterval(animar);
-  }, 2000);
-}
+      const sorteados = [];
+      while (sorteados.length < qtd) {
+        const i = Math.floor(Math.random() * pool.length);
+        sorteados.push(pool.splice(i, 1)[0]);
+      }
 
-function atualizarHistorico() {
-  const h = document.getElementById("historico");
-  h.innerHTML = "<strong>Histórico:</strong><br>" + historico.slice(-20).join("<br>");
-}
+      let i = 0;
+      const animar = () => {
+        let tempo = 0;
+        const loop = setInterval(() => {
+          const fake = Math.floor(Math.random() * (max - min + 1)) + min;
+          document.getElementById("resultado").textContent = fake;
+          tempo += 100;
 
-function limpar() {
-  historico = [];
-  document.getElementById("historico").innerHTML = "";
-  document.getElementById("resultado").textContent = "Pronto para sortear";
-}
+          if (tempo >= 2000) {
+            clearInterval(loop);
+            const sorteado = sorteados[i];
+            document.getElementById("resultado").textContent = sorteado;
+            som.play();
+            historico.push(sorteado);
+            atualizarHistorico();
+            i++;
+            if (i < sorteados.length) {
+              setTimeout(animar, 500);
+            }
+          }
+        }, 100);
+      };
 
+      animar();
+    }
+
+    function atualizarHistorico() {
+      const h = document.getElementById("historico");
+      h.innerHTML = "<strong>Histórico:</strong><br>" + historico.slice(-20).join("<br>");
+    }
+
+    function limpar() {
+      historico = [];
+      document.getElementById("historico").innerHTML = "";
+      document.getElementById("resultado").textContent = "Pronto para sortear";
+    }
   </script>
 </body>
 </html>
