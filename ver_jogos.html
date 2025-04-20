@@ -1,75 +1,128 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Meus Jogos</title>
+  <title>Ver Meus Jogos</title>
   <style>
     body {
-      background-color: #121212;
-      color: #fff;
       font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: #ffffff;
       text-align: center;
-      padding: 20px;
+      padding: 30px;
     }
 
     h2 {
-      margin-bottom: 20px;
+      color: #00ffcc;
     }
 
-    .jogo {
-      background-color: #1e1e1e;
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      background-color: #333;
       margin: 10px auto;
       padding: 10px;
-      border-radius: 10px;
+      border-radius: 6px;
       max-width: 300px;
       font-size: 18px;
     }
 
     button {
+      margin-top: 20px;
       padding: 10px 20px;
       font-size: 16px;
-      background-color: #2a2a2a;
-      color: white;
+      background-color: #00ffcc;
+      color: #000;
       border: none;
       border-radius: 8px;
-      margin-bottom: 20px;
       cursor: pointer;
+    }
+
+    #login-area {
+      display: none;
+    }
+
+    input {
+      margin: 5px;
+      padding: 8px;
+      border-radius: 6px;
+      border: none;
     }
   </style>
 </head>
 <body>
+  <h2>Seus Jogos</h2>
 
-  <h2>Meus Jogos Criados</h2>
-  <button onclick="carregarJogos()">Atualizar Lista</button>
-  <div id="listaJogos"></div>
+  <div id="login-area">
+    <p>Você precisa estar logado para ver seus jogos.</p>
+    <input type="text" id="nomeLogin" placeholder="Primeiro Nome">
+    <input type="password" id="senhaLogin" placeholder="Senha (4 dígitos)">
+    <button onclick="login()">Entrar</button>
+  </div>
+
+  <div id="jogos-area" style="display:none;">
+    <p>Olá, <span id="usuario-logado"></span>! Aqui estão seus jogos:</p>
+    <ul id="lista-jogos"></ul>
+    <button onclick="logout()">Sair</button>
+  </div>
 
   <script>
-    function carregarJogos() {
-      const nomeUsuario = localStorage.getItem("usuario_logado");
-      const lista = document.getElementById("listaJogos");
+    let usuarioLogado = localStorage.getItem("usuarioLogado");
+
+    window.onload = function () {
+      if (usuarioLogado) {
+        mostrarJogos();
+      } else {
+        document.getElementById("login-area").style.display = "block";
+      }
+    }
+
+    function login() {
+      const nome = document.getElementById("nomeLogin").value.trim();
+      const senha = document.getElementById("senhaLogin").value.trim();
+
+      const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+
+      const usuario = usuarios.find(u => u.nome.toLowerCase() === nome.toLowerCase() && u.senha === senha);
+
+      if (usuario) {
+        localStorage.setItem("usuarioLogado", usuario.nome);
+        usuarioLogado = usuario.nome;
+        mostrarJogos();
+      } else {
+        alert("Nome ou senha incorretos.");
+      }
+    }
+
+    function mostrarJogos() {
+      document.getElementById("login-area").style.display = "none";
+      document.getElementById("jogos-area").style.display = "block";
+      document.getElementById("usuario-logado").innerText = usuarioLogado;
+
+      const lista = document.getElementById("lista-jogos");
       lista.innerHTML = "";
 
-      if (!nomeUsuario) {
-        lista.innerHTML = "<p>Usuário não logado.</p>";
-        return;
-      }
-
-      const jogos = JSON.parse(localStorage.getItem("jogos_" + nomeUsuario)) || [];
+      const jogos = JSON.parse(localStorage.getItem(`jogos_${usuarioLogado}`)) || [];
 
       if (jogos.length === 0) {
-        lista.innerHTML = "<p>Você ainda não criou nenhum jogo.</p>";
+        lista.innerHTML = "<li>Nenhum jogo criado ainda.</li>";
         return;
       }
 
-      jogos.forEach((jogo, index) => {
-        const div = document.createElement("div");
-        div.className = "jogo";
-        div.textContent = `Jogo ${index + 1}: ${jogo.join("-")}`;
-        lista.appendChild(div);
+      jogos.forEach(jogo => {
+        const li = document.createElement("li");
+        li.textContent = jogo;
+        lista.appendChild(li);
       });
     }
 
-    carregarJogos(); // chama ao carregar a página
+    function logout() {
+      localStorage.removeItem("usuarioLogado");
+      location.reload();
+    }
   </script>
 </body>
 </html>
