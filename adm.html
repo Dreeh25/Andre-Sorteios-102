@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Área do ADM</title>
+  <style>
+    body {
+      background-color: #111;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+
+    input, button {
+      padding: 10px;
+      margin: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+    }
+
+    input {
+      width: 80%;
+    }
+
+    .section {
+      background-color: #222;
+      padding: 20px;
+      border-radius: 10px;
+      margin: 15px auto;
+      max-width: 400px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .resultado {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #0f0;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Área do ADM</h2>
+
+  <div id="loginADM" class="section">
+    <p>Digite a senha do ADM:</p>
+    <input type="password" id="senhaADM" placeholder="Senha" />
+    <button onclick="verificarSenhaADM()">Entrar</button>
+  </div>
+
+  <div id="painelADM" class="section hidden">
+    <h3>Configurar Jogo</h3>
+    <input type="number" id="minimo" placeholder="Valor mínimo" /><br>
+    <input type="number" id="maximo" placeholder="Valor máximo" /><br>
+    <input type="number" id="quantidade" placeholder="Quantidade por jogo" /><br>
+    <button onclick="salvarConfiguracoes()">Salvar Configurações</button>
+
+    <h3>Sorteio Personalizado ADM</h3>
+    <button onclick="sortearADM()">Sortear</button>
+    <div id="resultadoADM" class="resultado"></div>
+  </div>
+
+  <script>
+    function verificarSenhaADM() {
+      const senha = document.getElementById("senhaADM").value;
+      if (senha === "kelvin") {
+        document.getElementById("loginADM").classList.add("hidden");
+        document.getElementById("painelADM").classList.remove("hidden");
+      } else {
+        alert("Senha incorreta!");
+      }
+    }
+
+    function salvarConfiguracoes() {
+      const minimo = parseInt(document.getElementById("minimo").value);
+      const maximo = parseInt(document.getElementById("maximo").value);
+      const quantidade = parseInt(document.getElementById("quantidade").value);
+
+      if (isNaN(minimo) || isNaN(maximo) || isNaN(quantidade)) {
+        alert("Preencha todos os campos corretamente.");
+        return;
+      }
+
+      const config = { minimo, maximo, quantidade };
+      localStorage.setItem("configADM", JSON.stringify(config));
+      alert("Configurações salvas com sucesso!");
+    }
+
+    function sortearADM() {
+      const config = JSON.parse(localStorage.getItem("configADM"));
+      if (!config) {
+        alert("Configurações não definidas.");
+        return;
+      }
+
+      const { minimo, maximo, quantidade } = config;
+      const resultado = [];
+      const usados = new Set();
+
+      while (resultado.length < quantidade) {
+        const numero = Math.floor(Math.random() * (maximo - minimo + 1)) + minimo;
+        if (!usados.has(numero)) {
+          usados.add(numero);
+          resultado.push(numero.toString().padStart(2, "0"));
+        }
+      }
+
+      // Salvar no histórico
+      const historico = JSON.parse(localStorage.getItem("historicoADM")) || [];
+      historico.unshift(resultado);
+      localStorage.setItem("historicoADM", JSON.stringify(historico));
+
+      // Exibir
+      document.getElementById("resultadoADM").innerText = `Resultado: ${resultado.join("-")}`;
+    }
+  </script>
+</body>
+</html>
