@@ -2,72 +2,58 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>André Sorteios 102</title>
+  <title>Bem-vindo</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
       background-color: #121212;
       color: white;
+      font-family: Arial, sans-serif;
       text-align: center;
-      padding: 40px;
+      padding-top: 100px;
     }
-    h1 {
-      color: #00ffcc;
-    }
-    ul {
-      list-style: none;
-      padding: 0;
-    }
-    li {
-      margin: 12px 0;
-    }
-    a {
-      text-decoration: none;
-      color: #ffffff;
-      background: #333;
+
+    button {
+      background-color: #ff6b6b;
+      color: white;
+      border: none;
+      border-radius: 6px;
       padding: 10px 20px;
-      border-radius: 8px;
-      display: inline-block;
-      transition: background 0.3s;
-    }
-    a:hover {
-      background: #00ffcc;
-      color: black;
+      cursor: pointer;
+      margin-top: 20px;
     }
   </style>
-
-  <!-- Firebase App (obrigatório) -->
-  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js"></script>
-  <!-- Firebase Authentication -->
-  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js"></script>
-
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyDnOU589vpzPHeZjiKbiBWwU-jjnxeZ_5w",
-      authDomain: "andre-sorteios.firebaseapp.com",
-      projectId: "andre-sorteios",
-      storageBucket: "andre-sorteios.firebasestorage.app",
-      messagingSenderId: "834918200759",
-      appId: "1:834918200759:web:b50c51ba336e232e04e432",
-      measurementId: "G-1ZP4G2MY3M"
-    };
-
-    // Inicializa Firebase
-    firebase.initializeApp(firebaseConfig);
-  </script>
 </head>
 <body>
-  <h1>André Sorteios 102</h1>
-  <p>Escolha uma das opções:</p>
-  <ul>
-    <li><a href="tradicional.html">Sorteio Tradicional</a></li>
-    <li><a href="personalizado.html">Sorteio Personalizado</a></li>
-    <li><a href="login.html">Login</a></li>
-    <li><a href="criar_jogo.html">Criar Jogo</a></li>
-    <li><a href="ver_jogos.html">Ver Jogos</a></li>
-    <li><a href="resultado.html">Resultado</a></li>
-    <li><a href="notificação.html">Notificações</a></li>
-    <li><a href="adm.html">Painel ADM</a></li>
-  </ul>
+  <h1>Bem-vindo ao André Sorteios</h1>
+  <p id="status">Verificando autenticação...</p>
+  <button onclick="logout()">Sair</button>
+
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "SUA_API_KEY",
+      authDomain: "SUA_AUTH_DOMAIN",
+      projectId: "SUA_PROJECT_ID",
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    auth.onAuthStateChanged((user) => {
+      const status = document.getElementById("status");
+      if (user) {
+        status.textContent = "Você está logado como: " + user.email;
+      } else {
+        window.location.href = "login.html";
+      }
+    });
+
+    function logout() {
+      auth.signOut().then(() => {
+        window.location.href = "login.html";
+      });
+    }
+  </script>
 </body>
 </html>
