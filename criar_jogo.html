@@ -18,6 +18,33 @@
       color: #00ffcc;
     }
 
+    #painel {
+      display: grid;
+      grid-template-columns: repeat(10, 40px);
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .numero {
+      width: 40px;
+      height: 40px;
+      text-align: center;
+      line-height: 40px;
+      background-color: #333;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .numero:hover {
+      background-color: #555;
+    }
+
+    .selecionado {
+      background-color: #00ffcc;
+      color: #000;
+    }
+
     button {
       padding: 10px 20px;
       font-size: 16px;
@@ -32,6 +59,10 @@
     button:hover {
       background-color: #00c3a0;
     }
+
+    #resultado {
+      margin-top: 15px;
+    }
   </style>
 </head>
 <body>
@@ -44,14 +75,47 @@
   </script>
 
   <h2>Olá, <span id="usuario-logado"></span>! Crie seu jogo:</h2>
-
   <p>Escolha seus números:</p>
-  <!-- Aqui pode vir sua tabela de números ou outro método de escolha -->
 
+  <div id="painel"></div>
+
+  <button onclick="enviarJogo()">Salvar Jogo</button>
   <button onclick="logout()">Sair</button>
+
+  <div id="resultado"></div>
 
   <script>
     document.getElementById("usuario-logado").innerText = usuarioLogado;
+
+    const painel = document.getElementById("painel");
+
+    // Supondo que o ADM definiu 3 números entre 0 e 60
+    const minimo = 0;
+    const maximo = 60;
+    const quantidade = 3;
+
+    for (let i = minimo; i <= maximo; i++) {
+      const numero = document.createElement("div");
+      numero.classList.add("numero");
+      numero.innerText = i.toString().padStart(2, "0");
+      numero.onclick = () => numero.classList.toggle("selecionado");
+      painel.appendChild(numero);
+    }
+
+    function enviarJogo() {
+      const selecionados = Array.from(document.getElementsByClassName("selecionado"))
+        .map(n => n.innerText);
+
+      if (selecionados.length !== quantidade) {
+        alert(`Você precisa selecionar exatamente ${quantidade} números.`);
+        return;
+      }
+
+      const jogo = selecionados.join("-");
+      document.getElementById("resultado").innerText = `Jogo salvo: ${jogo}`;
+      
+      // Aqui você pode salvar esse jogo em localStorage, servidor, etc.
+    }
 
     function logout() {
       localStorage.removeItem("usuarioLogado");
