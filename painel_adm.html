@@ -88,6 +88,7 @@
   </div>
 
   <script>
+    // Verificação da senha do ADM
     function verificarSenha() {
       const senha = document.getElementById("senhaAdm").value;
       if (senha === "kelvin") {
@@ -98,6 +99,7 @@
       }
     }
 
+    // Salvar as configurações do sorteio
     function salvarConfig() {
       const minimo = document.getElementById("minimo").value;
       const maximo = document.getElementById("maximo").value;
@@ -116,6 +118,7 @@
       document.getElementById("resultadoConfig").style.display = "block";
     }
 
+    // Realizar o sorteio e enviar a notificação
     function realizarSorteio() {
       const minimo = parseInt(localStorage.getItem("minimo"));
       const maximo = parseInt(localStorage.getItem("maximo"));
@@ -127,10 +130,35 @@
         sorteio.push(String(numeroSorteado).padStart(2, '0'));
       }
 
+      const resultado = sorteio.join("-");
+
+      // Exibindo o resultado na tela
       document.getElementById("resultadoSorteio").innerHTML = `
-        Resultado do sorteio: ${sorteio.join("-")}
+        Resultado do sorteio: ${resultado}
       `;
       document.getElementById("resultadoSorteio").style.display = "block";
+
+      // Enviando a notificação
+      enviarNotificacao(resultado);
+    }
+
+    // Função para enviar a notificação
+    function enviarNotificacao(resultado) {
+      if (Notification.permission === "granted") {
+        new Notification("Resultado do Sorteio", {
+          body: `O sorteio gerado foi: ${resultado}`,
+          icon: "https://via.placeholder.com/100" // A imagem do ícone da notificação
+        });
+      } else if (Notification.permission !== "denied") {
+        Notification.requestPermission().then(function(permission) {
+          if (permission === "granted") {
+            new Notification("Resultado do Sorteio", {
+              body: `O sorteio gerado foi: ${resultado}`,
+              icon: "https://via.placeholder.com/100"
+            });
+          }
+        });
+      }
     }
   </script>
 
