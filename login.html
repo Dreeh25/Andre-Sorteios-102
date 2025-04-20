@@ -46,6 +46,13 @@
       margin-top: 12px;
       color: #ff6b6b;
     }
+
+    .cadastro-link {
+      margin-top: 15px;
+      color: #00ffcc;
+      text-decoration: underline;
+      cursor: pointer;
+    }
   </style>
 
   <!-- Firebase App + Auth -->
@@ -57,7 +64,7 @@
       apiKey: "AIzaSyDnOU589vpzPHeZjiKbiBWwU-jjnxeZ_5w",
       authDomain: "andre-sorteios.firebaseapp.com",
       projectId: "andre-sorteios",
-      storageBucket: "andre-sorteios.firebasestorage.app",
+      storageBucket: "andre-sorteios.appspot.com",
       messagingSenderId: "834918200759",
       appId: "1:834918200759:web:b50c51ba336e232e04e432",
       measurementId: "G-1ZP4G2MY3M"
@@ -92,5 +99,6 @@
   <input type="password" id="senha" placeholder="Senha" />
   <button onclick="fazerLogin()">Entrar</button>
   <div id="mensagem"></div>
+  <div class="cadastro-link" onclick="window.location.href='cadastro.html'">Não tem conta? Cadastre-se</div>
 </body>
 </html>
