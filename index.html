@@ -57,47 +57,17 @@
   <input type="text" id="nome" placeholder="Nome completo">
   <input type="tel" id="celular" placeholder="Celular">
   <input type="password" id="senha" placeholder="Senha (4 dígitos)" maxlength="4">
-  
+
   <button onclick="cadastrar()">Cadastrar</button>
-  
+
   <p id="mensagem"></p>
-  
-  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js"></script>
-  
+
   <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyDnOU589vpzPHeZjiKbiBWwU-jjnxeZ_5w",
-      authDomain: "andre-sorteios.firebaseapp.com",
-      projectId: "andre-sorteios",
-      storageBucket: "andre-sorteios.appspot.com",
-      messagingSenderId: "834918200759",
-      appId: "1:834918200759:web:b50c51ba336e232e04e432",
-      measurementId: "G-1ZP4G2MY3M"
-    };
-    
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-
-    // Verifica se o usuário está logado
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        document.getElementById("mensagem").textContent = "Bem-vindo(a), " + user.email;
-      }
-    });
-
-    // Função de logout
-    function logout() {
-      auth.signOut().then(() => {
-        window.location.href = "login.html"; // Redireciona para o login após logout
-      });
-    }
-
     function cadastrar() {
       const nome = document.getElementById('nome').value.trim();
       const celular = document.getElementById('celular').value.trim();
       const senha = document.getElementById('senha').value.trim();
-      
+
       if (!nome || !celular || senha.length !== 4 || isNaN(senha)) {
         document.getElementById('mensagem').textContent = "Preencha todos os campos corretamente.";
         return;
@@ -110,6 +80,5 @@
       document.getElementById('mensagem').textContent = "Cadastro realizado com sucesso!";
     }
   </script>
-
 </body>
 </html>
