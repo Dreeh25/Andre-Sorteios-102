@@ -2,83 +2,52 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Sorteio Personalizado 1</title>
+  <title>André Sorteios 102</title>
   <style>
     body {
-      background-color: #121212;
-      color: #ffffff;
       font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-    }
-
-    h2 {
-      margin-bottom: 20px;
-    }
-
-    input {
-      padding: 10px;
-      margin: 10px;
-      width: 250px;
-      border: none;
-      border-radius: 5px;
-      font-size: 1em;
-    }
-
-    button {
-      background-color: #1f1f1f;
+      background-color: #121212;
       color: white;
-      padding: 12px 25px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      margin-top: 20px;
-      font-size: 1em;
+      text-align: center;
+      padding: 40px;
     }
-
-    button:hover {
-      background-color: #333;
+    h1 {
+      color: #00ffcc;
     }
-
-    #mensagem {
-      margin-top: 15px;
-      color: #00ff99;
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      margin: 12px 0;
+    }
+    a {
+      text-decoration: none;
+      color: #ffffff;
+      background: #333;
+      padding: 10px 20px;
+      border-radius: 8px;
+      display: inline-block;
+      transition: background 0.3s;
+    }
+    a:hover {
+      background: #00ffcc;
+      color: black;
     }
   </style>
 </head>
 <body>
-
-  <h2>Cadastro de Usuário</h2>
-
-  <input type="text" id="nome" placeholder="Nome completo">
-  <input type="tel" id="celular" placeholder="Celular">
-  <input type="password" id="senha" placeholder="Senha (4 dígitos)" maxlength="4">
-
-  <button onclick="cadastrar()">Cadastrar</button>
-
-  <p id="mensagem"></p>
-
-  <script>
-    function cadastrar() {
-      const nome = document.getElementById('nome').value.trim();
-      const celular = document.getElementById('celular').value.trim();
-      const senha = document.getElementById('senha').value.trim();
-
-      if (!nome || !celular || senha.length !== 4 || isNaN(senha)) {
-        document.getElementById('mensagem').textContent = "Preencha todos os campos corretamente.";
-        return;
-      }
-
-      // Salva em localStorage (simulação simples)
-      const usuario = { nome, celular, senha };
-      localStorage.setItem("usuario_" + nome.toLowerCase(), JSON.stringify(usuario));
-
-      document.getElementById('mensagem').textContent = "Cadastro realizado com sucesso!";
-    }
-  </script>
+  <h1>André Sorteios 102</h1>
+  <p>Escolha uma das opções:</p>
+  <ul>
+    <li><a href="tradicional.html">Sorteio Tradicional</a></li>
+    <li><a href="personalizado.html">Sorteio Personalizado</a></li>
+    <li><a href="login.html">Login</a></li>
+    <li><a href="criar_jogo.html">Criar Jogo</a></li>
+    <li><a href="ver_jogos.html">Ver Jogos</a></li>
+    <li><a href="resultado.html">Resultado</a></li>
+    <li><a href="notificação.html">Notificações</a></li>
+    <li><a href="adm.html">Painel ADM</a></li>
+  </ul>
 </body>
 </html>
