@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Cadastro - André Sorteios</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    input, button {
+      margin: 8px 0;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      width: 250px;
+    }
+
+    button {
+      background-color: #00ffcc;
+      color: black;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #00d1b2;
+    }
+
+    #mensagem {
+      margin-top: 12px;
+      color: #ff6b6b;
+    }
+  </style>
+</head>
+<body>
+  <h2>Cadastro</h2>
+  <input type="text" id="nome" placeholder="Nome completo" />
+  <input type="email" id="email" placeholder="Email" />
+  <input type="password" id="senha" placeholder="Senha" />
+  <button onclick="cadastrar()">Cadastrar</button>
+  <div id="mensagem"></div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "SUA_API_KEY",
+      authDomain: "SUA_AUTH_DOMAIN",
+      projectId: "SUA_PROJECT_ID",
+      // ...restante
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    function cadastrar() {
+      const email = document.getElementById("email").value;
+      const senha = document.getElementById("senha").value;
+      const mensagem = document.getElementById("mensagem");
+
+      auth.createUserWithEmailAndPassword(email, senha)
+        .then((userCredential) => {
+          mensagem.style.color = "#00ffcc";
+          mensagem.textContent = "Cadastro realizado com sucesso!";
+          setTimeout(() => {
+            window.location.href = "index.html";
+          }, 1500);
+        })
+        .catch((error) => {
+          mensagem.style.color = "#ff6b6b";
+          mensagem.textContent = "Erro: " + error.message;
+        });
+    }
+  </script>
+</body>
+</html>
