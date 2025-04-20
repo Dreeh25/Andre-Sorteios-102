@@ -3,6 +3,52 @@
 <head>
   <meta charset="UTF-8">
   <title>Sorteio Personalizado - Login e Cadastro</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+    h2 {
+      margin-top: 40px;
+      color: #00e676;
+    }
+    input {
+      padding: 12px;
+      margin: 6px 0;
+      width: 250px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+    }
+    button {
+      background-color: #1e88e5;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #1565c0;
+    }
+    hr {
+      width: 80%;
+      margin: 40px 0;
+      border: 1px solid #333;
+    }
+    #login-erro, #cadastro-sucesso {
+      margin-top: 10px;
+      font-size: 15px;
+    }
+  </style>
 </head>
 <body>
   <h2>Login</h2>
@@ -18,10 +64,9 @@
   <input id="cadastro-celular" type="text" placeholder="Celular"><br>
   <input id="cadastro-senha" type="password" placeholder="Senha de 4 dígitos"><br>
   <button onclick="fazerCadastro()">Cadastrar</button>
-  <p id="cadastro-sucesso" style="color:green;"></p>
+  <p id="cadastro-sucesso" style="color: #00e676;"></p>
 
   <script>
-    // Carrega ou inicia o banco local de usuários
     const usuariosCadastrados = JSON.parse(localStorage.getItem("usuarios")) || [];
 
     function fazerLogin() {
