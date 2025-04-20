@@ -35,6 +35,26 @@
       color: black;
     }
   </style>
+
+  <!-- Firebase App (obrigatório) -->
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js"></script>
+  <!-- Firebase Authentication -->
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDnOU589vpzPHeZjiKbiBWwU-jjnxeZ_5w",
+      authDomain: "andre-sorteios.firebaseapp.com",
+      projectId: "andre-sorteios",
+      storageBucket: "andre-sorteios.firebasestorage.app",
+      messagingSenderId: "834918200759",
+      appId: "1:834918200759:web:b50c51ba336e232e04e432",
+      measurementId: "G-1ZP4G2MY3M"
+    };
+
+    // Inicializa Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
 </head>
 <body>
   <h1>André Sorteios 102</h1>
