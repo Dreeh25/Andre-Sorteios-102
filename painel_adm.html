@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Painel ADM</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    .campo {
+      margin: 10px;
+    }
+
+    input, select {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+      margin-top: 5px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #2a2a2a;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      margin-top: 20px;
+      cursor: pointer;
+    }
+
+    .resultado {
+      margin-top: 20px;
+      background-color: #1e1e1e;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 400px;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Painel ADM</h2>
+
+  <div class="campo">
+    <label for="senhaAdm">Senha de acesso (kelvin):</label>
+    <input type="password" id="senhaAdm" placeholder="Digite a senha de 4 dígitos">
+  </div>
+
+  <button onclick="verificarSenha()">Acessar ADM</button>
+
+  <div id="configuracoesAdm" style="display: none;">
+    <h3>Configurações do Sorteio</h3>
+
+    <div class="campo">
+      <label for="minimo">Valor Mínimo:</label>
+      <input type="number" id="minimo" min="0" value="0">
+    </div>
+
+    <div class="campo">
+      <label for="maximo">Valor Máximo:</label>
+      <input type="number" id="maximo" min="0" value="60">
+    </div>
+
+    <div class="campo">
+      <label for="quantidade">Quantidade de Combinações de Dígitos:</label>
+      <input type="number" id="quantidade" min="1" value="3">
+    </div>
+
+    <button onclick="salvarConfig()">Salvar Configurações</button>
+
+    <div class="resultado" id="resultadoConfig" style="display: none;"></div>
+
+    <h3>Sorteio Personalizado</h3>
+    <button onclick="realizarSorteio()">Realizar Sorteio Personalizado</button>
+    <div id="resultadoSorteio" class="resultado" style="display: none;"></div>
+  </div>
+
+  <script>
+    function verificarSenha() {
+      const senha = document.getElementById("senhaAdm").value;
+      if (senha === "kelvin") {
+        document.getElementById("configuracoesAdm").style.display = "block";
+        alert("Você é benção!");
+      } else {
+        alert("Você errou a senha, filho!");
+      }
+    }
+
+    function salvarConfig() {
+      const minimo = document.getElementById("minimo").value;
+      const maximo = document.getElementById("maximo").value;
+      const quantidade = document.getElementById("quantidade").value;
+
+      localStorage.setItem("minimo", minimo);
+      localStorage.setItem("maximo", maximo);
+      localStorage.setItem("quantidade", quantidade);
+
+      document.getElementById("resultadoConfig").innerHTML = `
+        Configurações salvas:<br>
+        Mínimo: ${minimo}<br>
+        Máximo: ${maximo}<br>
+        Quantidade de Combinações: ${quantidade}
+      `;
+      document.getElementById("resultadoConfig").style.display = "block";
+    }
+
+    function realizarSorteio() {
+      const minimo = parseInt(localStorage.getItem("minimo"));
+      const maximo = parseInt(localStorage.getItem("maximo"));
+      const quantidade = parseInt(localStorage.getItem("quantidade"));
+
+      let sorteio = [];
+      for (let i = 0; i < quantidade; i++) {
+        const numeroSorteado = Math.floor(Math.random() * (maximo - minimo + 1)) + minimo;
+        sorteio.push(String(numeroSorteado).padStart(2, '0'));
+      }
+
+      document.getElementById("resultadoSorteio").innerHTML = `
+        Resultado do sorteio: ${sorteio.join("-")}
+      `;
+      document.getElementById("resultadoSorteio").style.display = "block";
+    }
+  </script>
+
+</body>
+</html>
