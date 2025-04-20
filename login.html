@@ -2,11 +2,11 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Login - Sorteio Personalizado</title>
+  <title>Login - André Sorteios</title>
   <style>
     body {
       background-color: #121212;
-      color: #ffffff;
+      color: white;
       font-family: Arial, sans-serif;
       display: flex;
       flex-direction: column;
@@ -17,74 +17,80 @@
     }
 
     h2 {
-      margin-bottom: 20px;
+      color: #00ffcc;
     }
 
     input {
+      margin: 8px 0;
       padding: 10px;
-      margin: 10px;
-      width: 250px;
       border: none;
-      border-radius: 5px;
-      font-size: 1em;
+      border-radius: 6px;
+      width: 250px;
     }
 
     button {
-      background-color: #1f1f1f;
-      color: white;
-      padding: 12px 25px;
+      background-color: #00ffcc;
+      color: black;
       border: none;
-      border-radius: 10px;
+      border-radius: 6px;
+      padding: 10px 20px;
       cursor: pointer;
-      margin-top: 20px;
-      font-size: 1em;
+      margin-top: 10px;
     }
 
     button:hover {
-      background-color: #333;
+      background-color: #00d1b2;
     }
 
     #mensagem {
-      margin-top: 15px;
-      color: #00ff99;
+      margin-top: 12px;
+      color: #ff6b6b;
     }
   </style>
-</head>
-<body>
 
-  <h2>Login do Usuário</h2>
-
-  <input type="text" id="nome" placeholder="Primeiro nome">
-  <input type="password" id="senha" placeholder="Senha (4 dígitos)" maxlength="4">
-
-  <button onclick="login()">Entrar</button>
-
-  <p id="mensagem"></p>
+  <!-- Firebase App + Auth -->
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js"></script>
 
   <script>
-    function login() {
-      const nome = document.getElementById('nome').value.trim().toLowerCase();
-      const senha = document.getElementById('senha').value.trim();
+    const firebaseConfig = {
+      apiKey: "AIzaSyDnOU589vpzPHeZjiKbiBWwU-jjnxeZ_5w",
+      authDomain: "andre-sorteios.firebaseapp.com",
+      projectId: "andre-sorteios",
+      storageBucket: "andre-sorteios.firebasestorage.app",
+      messagingSenderId: "834918200759",
+      appId: "1:834918200759:web:b50c51ba336e232e04e432",
+      measurementId: "G-1ZP4G2MY3M"
+    };
 
-      const usuario = localStorage.getItem("usuario_" + nome);
-      if (!usuario) {
-        document.getElementById('mensagem').textContent = "Usuário não encontrado.";
-        return;
-      }
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
 
-      const dados = JSON.parse(usuario);
-      if (dados.senha !== senha) {
-        document.getElementById('mensagem').textContent = "Senha incorreta.";
-        return;
-      }
+    function fazerLogin() {
+      const email = document.getElementById("email").value;
+      const senha = document.getElementById("senha").value;
+      const mensagem = document.getElementById("mensagem");
 
-      // Login bem-sucedido
-      document.getElementById('mensagem').textContent = "Bem-vindo, " + dados.nome + "!";
-      setTimeout(() => {
-        window.location.href = "criar_jogo.html"; // Redireciona para a próxima etapa
-      }, 1500);
+      auth.signInWithEmailAndPassword(email, senha)
+        .then((userCredential) => {
+          mensagem.style.color = "#00ffcc";
+          mensagem.textContent = "Login bem-sucedido!";
+          setTimeout(() => {
+            window.location.href = "index.html"; // redireciona após login
+          }, 1500);
+        })
+        .catch((error) => {
+          mensagem.style.color = "#ff6b6b";
+          mensagem.textContent = "Erro: " + error.message;
+        });
     }
   </script>
-
+</head>
+<body>
+  <h2>Login</h2>
+  <input type="email" id="email" placeholder="Email" />
+  <input type="password" id="senha" placeholder="Senha" />
+  <button onclick="fazerLogin()">Entrar</button>
+  <div id="mensagem"></div>
 </body>
 </html>
