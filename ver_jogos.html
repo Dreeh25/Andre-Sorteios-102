@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Meus Jogos</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    .jogo {
+      background-color: #1e1e1e;
+      margin: 10px auto;
+      padding: 10px;
+      border-radius: 10px;
+      max-width: 300px;
+      font-size: 18px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #2a2a2a;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Meus Jogos Criados</h2>
+  <button onclick="carregarJogos()">Atualizar Lista</button>
+  <div id="listaJogos"></div>
+
+  <script>
+    function carregarJogos() {
+      const nomeUsuario = localStorage.getItem("usuario_logado");
+      const lista = document.getElementById("listaJogos");
+      lista.innerHTML = "";
+
+      if (!nomeUsuario) {
+        lista.innerHTML = "<p>Usuário não logado.</p>";
+        return;
+      }
+
+      const jogos = JSON.parse(localStorage.getItem("jogos_" + nomeUsuario)) || [];
+
+      if (jogos.length === 0) {
+        lista.innerHTML = "<p>Você ainda não criou nenhum jogo.</p>";
+        return;
+      }
+
+      jogos.forEach((jogo, index) => {
+        const div = document.createElement("div");
+        div.className = "jogo";
+        div.textContent = `Jogo ${index + 1}: ${jogo.join("-")}`;
+        lista.appendChild(div);
+      });
+    }
+
+    carregarJogos(); // chama ao carregar a página
+  </script>
+</body>
+</html>
