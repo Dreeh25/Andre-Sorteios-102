@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Sorteio Personalizado - Login</title>
+  <title>Sorteio Personalizado - Login e Cadastro</title>
 </head>
 <body>
   <h2>Login</h2>
@@ -11,12 +11,18 @@
   <button onclick="fazerLogin()">Entrar</button>
   <p id="login-erro" style="color:red;"></p>
 
+  <hr>
+
+  <h2>Cadastro</h2>
+  <input id="cadastro-nome" type="text" placeholder="Nome Completo"><br>
+  <input id="cadastro-celular" type="text" placeholder="Celular"><br>
+  <input id="cadastro-senha" type="password" placeholder="Senha de 4 dígitos"><br>
+  <button onclick="fazerCadastro()">Cadastrar</button>
+  <p id="cadastro-sucesso" style="color:green;"></p>
+
   <script>
-    // Simula usuários cadastrados
-    const usuariosCadastrados = [
-      { nome: "andre", senha: "1234" },
-      { nome: "maria", senha: "4321" }
-    ];
+    // Carrega ou inicia o banco local de usuários
+    const usuariosCadastrados = JSON.parse(localStorage.getItem("usuarios")) || [];
 
     function fazerLogin() {
       const nome = document.getElementById("login-nome").value.trim().toLowerCase();
@@ -24,16 +30,34 @@
       const erro = document.getElementById("login-erro");
 
       const usuario = usuariosCadastrados.find(
-        user => user.nome === nome && user.senha === senha
+        user => user.nome.split(" ")[0].toLowerCase() === nome && user.senha === senha
       );
 
       if (usuario) {
-        localStorage.setItem("usuarioLogado", nome); // SALVA LOGIN
+        localStorage.setItem("usuarioLogado", usuario.nome);
         alert("Você é benção!");
-        window.location.href = "criar_jogo.html"; // Redireciona
+        window.location.href = "criar_jogo.html";
       } else {
         erro.innerText = "Você errou a senha filho!";
       }
+    }
+
+    function fazerCadastro() {
+      const nome = document.getElementById("cadastro-nome").value.trim();
+      const celular = document.getElementById("cadastro-celular").value.trim();
+      const senha = document.getElementById("cadastro-senha").value.trim();
+      const sucesso = document.getElementById("cadastro-sucesso");
+
+      if (!nome || !celular || senha.length !== 4 || isNaN(senha)) {
+        alert("Preencha corretamente todos os campos (senha deve ter 4 dígitos numéricos).");
+        return;
+      }
+
+      const novoUsuario = { nome, celular, senha };
+      usuariosCadastrados.push(novoUsuario);
+      localStorage.setItem("usuarios", JSON.stringify(usuariosCadastrados));
+
+      sucesso.innerText = "Cadastro realizado com sucesso!";
     }
   </script>
 </body>
