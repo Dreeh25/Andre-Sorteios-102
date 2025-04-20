@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Sorteio Personalizado 1</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    input {
+      padding: 10px;
+      margin: 10px;
+      width: 250px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1em;
+    }
+
+    button {
+      background-color: #1f1f1f;
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 20px;
+      font-size: 1em;
+    }
+
+    button:hover {
+      background-color: #333;
+    }
+
+    #mensagem {
+      margin-top: 15px;
+      color: #00ff99;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Cadastro de Usuário</h2>
+
+  <input type="text" id="nome" placeholder="Nome completo">
+  <input type="tel" id="celular" placeholder="Celular">
+  <input type="password" id="senha" placeholder="Senha (4 dígitos)" maxlength="4">
+
+  <button onclick="cadastrar()">Cadastrar</button>
+
+  <p id="mensagem"></p>
+
+  <script>
+    function cadastrar() {
+      const nome = document.getElementById('nome').value.trim();
+      const celular = document.getElementById('celular').value.trim();
+      const senha = document.getElementById('senha').value.trim();
+
+      if (!nome || !celular || senha.length !== 4 || isNaN(senha)) {
+        document.getElementById('mensagem').textContent = "Preencha todos os campos corretamente.";
+        return;
+      }
+
+      // Salva em localStorage (simulação simples)
+      const usuario = { nome, celular, senha };
+      localStorage.setItem("usuario_" + nome.toLowerCase(), JSON.stringify(usuario));
+
+      document.getElementById('mensagem').textContent = "Cadastro realizado com sucesso!";
+    }
+  </script>
+</body>
+</html>
