@@ -1,120 +1,31 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8">
   <title>Criar Meu Jogo</title>
-  <style>
-    body {
-      background-color: #121212;
-      color: #ffffff;
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      text-align: center;
-    }
-
-    h2 {
-      margin-bottom: 10px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
-      gap: 10px;
-      max-width: 600px;
-      margin: auto;
-    }
-
-    .num {
-      background-color: #333;
-      padding: 10px;
-      border-radius: 8px;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .num.selected {
-      background-color: #00ff99;
-      color: #000;
-    }
-
-    button {
-      margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 16px;
-      background-color: #1f1f1f;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-
-    #mensagem {
-      margin-top: 15px;
-      color: #00ff99;
-    }
-  </style>
 </head>
 <body>
+  <h2>Olá, <span id="usuario-logado"></span>! Crie seu jogo:</h2>
 
-  <h2>Criar Meu Jogo</h2>
-  <p>Selecione <span id="quantidade"></span> números entre <span id="min"></span> e <span id="max"></span>:</p>
+  <p>Escolha seus números:</p>
+  <!-- Aqui pode vir sua tabela de números ou outro método de escolha -->
 
-  <div class="grid" id="tabelaNumeros"></div>
-
-  <button onclick="salvarJogo()">Salvar Jogo</button>
-  <p id="mensagem"></p>
+  <button onclick="logout()">Sair</button>
 
   <script>
-    // Simulação das regras do ADM salvas no localStorage
-    const regras = JSON.parse(localStorage.getItem("regrasADM")) || {
-      minimo: 0,
-      maximo: 30,
-      quantidade: 3
-    };
-
-    document.getElementById("min").textContent = regras.minimo;
-    document.getElementById("max").textContent = regras.maximo;
-    document.getElementById("quantidade").textContent = regras.quantidade;
-
-    const tabela = document.getElementById("tabelaNumeros");
-
-    for (let i = regras.minimo; i <= regras.maximo; i++) {
-      const num = document.createElement("div");
-      num.className = "num";
-      num.textContent = String(i).padStart(2, '0');
-      num.onclick = () => {
-        num.classList.toggle("selected");
-        atualizarSelecao();
-      };
-      tabela.appendChild(num);
-    }
-
-    function atualizarSelecao() {
-      const selecionados = document.querySelectorAll(".num.selected");
-      if (selecionados.length > regras.quantidade) {
-        selecionados[regras.quantidade].classList.remove("selected");
+    window.onload = function() {
+      const usuario = localStorage.getItem("usuarioLogado");
+      if (!usuario) {
+        alert("Você precisa estar logado para criar um jogo.");
+        window.location.href = "personalizado.html";
+      } else {
+        document.getElementById("usuario-logado").innerText = usuario;
       }
     }
 
-    function salvarJogo() {
-      const selecionados = Array.from(document.querySelectorAll(".num.selected")).map(n => n.textContent);
-      if (selecionados.length !== regras.quantidade) {
-        document.getElementById("mensagem").textContent = "Selecione exatamente " + regras.quantidade + " números.";
-        return;
-      }
-
-      const nomeUsuario = localStorage.getItem("usuario_logado");
-      if (!nomeUsuario) {
-        document.getElementById("mensagem").textContent = "Erro: usuário não logado.";
-        return;
-      }
-
-      let jogos = JSON.parse(localStorage.getItem("jogos_" + nomeUsuario)) || [];
-      jogos.push(selecionados);
-      localStorage.setItem("jogos_" + nomeUsuario, JSON.stringify(jogos));
-
-      document.getElementById("mensagem").textContent = "Jogo salvo com sucesso: " + selecionados.join("-");
-      document.querySelectorAll(".num.selected").forEach(n => n.classList.remove("selected"));
+    function logout() {
+      localStorage.removeItem("usuarioLogado");
+      window.location.href = "personalizado.html";
     }
   </script>
 </body>
