@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Resultado do Sorteio</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    .resultado {
+      background-color: #1e1e1e;
+      margin: 20px auto;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 400px;
+      font-size: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #2a2a2a;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      margin-top: 20px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Resultado do Sorteio</h2>
+
+  <button onclick="mostrarResultado()">Ver Último Sorteio</button>
+  
+  <div id="resultadoSorteio" class="resultado hidden"></div>
+
+  <script>
+    function mostrarResultado() {
+      const resultadoSorteio = document.getElementById("resultadoSorteio");
+      const historico = JSON.parse(localStorage.getItem("historicoADM")) || [];
+
+      if (historico.length === 0) {
+        resultadoSorteio.innerHTML = "<p>Nenhum sorteio realizado ainda.</p>";
+        resultadoSorteio.classList.remove("hidden");
+        return;
+      }
+
+      const ultimoResultado = historico[0];
+      resultadoSorteio.innerHTML = `Último Sorteio: ${ultimoResultado.join("-")}`;
+      resultadoSorteio.classList.remove("hidden");
+    }
+  </script>
+
+</body>
+</html>
